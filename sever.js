@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://sophan:sophan%40123@cluster0.r3agzsk.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-app.get('/', async (req, res) => {
+app.use(cors());
+app.get('/images', async (req, res) => {
     try {
         await client.connect();
         const database = client.db('test');
