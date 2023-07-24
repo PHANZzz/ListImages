@@ -19,6 +19,21 @@ app.get('/', async (req, res) => {
         await client.close();
     }
 });
+app.post('/upload', async (req, res) => {
+    try {
+        await client.connect();
+        const database = client.db('test');
+        const collection = database.collection('images');
+        const { name, price, image } = req.body;
+        await collection.insertOne({ name, price, image });
+        res.status(201).send('Image uploaded successfully!');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred while uploading the image to the database.');
+    } finally {
+        await client.close();
+    }
+});
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
