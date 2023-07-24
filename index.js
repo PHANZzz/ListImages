@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://sophan:sophan%40123@cluster0.r3agzsk.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(cors());
-app.get('/images', async (req, res) => {
+app.get('/', async (req, res) => {
     try {
         await client.connect();
         const database = client.db('test');
