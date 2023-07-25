@@ -5,7 +5,7 @@
         <link
             href="https://cdn.jsdelivr.net/npm/tailwindcss@2/dist/tailwind.min.css"
             rel="stylesheet">
-
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <title>Image List</title>
         <style>
             .card {
@@ -35,15 +35,27 @@
                 height: 70%;
                 object-fit: cover;
             }
+            
             h1 {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    color: #ff69b4;
-   margin-left: 3%;
-   margin-top: 3%;
-    margin-top: 3%;
-    font-size: 36px;
-}
-
+                font-family: 'Comic Sans MS', cursive, sans-serif;
+                color: #ff69b4;
+                margin-left: 3%;
+                margin-top: 3%;
+                font-size: 36px;
+            }
+            
+            .buy-button {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background-color: #6366F1;
+                color: white;
+                text-align:center;
+                font-size:24px;
+            }
         </style>
     </head>
     <body>
@@ -73,7 +85,10 @@
         <h1>Fruit Shop Online </h1>
         <div class="image-list mt-10" id="image-list"></div>
 
+        <div class='buy-button' id='buy-button'>Buy</div>
+
         <script>
+    let total = {};
     async function fetchImages() {
     const response = await fetch('https://list-images.vercel.app/');
     const images = await response.json();
@@ -81,14 +96,42 @@
     images.forEach(image => {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `<img src="data:image/png;base64,${image.img.data}" alt="${image.name}"><div class="container"><h4><b>${image.name}</b></h4><p>${image.price}$</p><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add</button></div>`;
+        card.innerHTML = `<img src="data:image/png;base64,${image.img.data}" alt="${image.name}"><div class="container"><h4><b>${image.name}</b></h4><p>${image.price}$</p><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="addToCart('${image.name}', ${image.price})">Add</button></div>`;
         imageListElement.appendChild(card);
     });
 }
 
+function addToCart(name, price) {
+    if (total[name]) {
+        total[name] += price;
+    } else {
+        total[name] = price;
+    }
+    updateBuyButton();
+}
+
+function updateBuyButton() {
+    let count = Object.keys(total).length;
+    let buyButton = document.getElementById('buy-button');
+    buyButton.innerHTML = `Buy <br>(${count})`;
+}
+
+document.getElementById('buy-button').addEventListener('click', function() {
+    let message = 'You are purchasing: ';
+    let totalPrice = 0;
+    for (let [key, value] of Object.entries(total)) {
+        message += `${key}: ${value}$, `;
+        totalPrice += value;
+    }
+    message = message.slice(0, -2); // remove trailing comma and space
+    message += `. Total: ${totalPrice}$`;
+    swal("Purchase", message, "success").then(() => {
+        window.location.href = 'service.html';
+    });
+});
 
 
-            fetchImages();
+fetchImages();
         </script>
     </body>
 </html>
