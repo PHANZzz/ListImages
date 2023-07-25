@@ -74,7 +74,7 @@
 
         <script>
       async function fetchImages() {
-    const response = await fetch('http://localhost:3000/');
+    const response = await fetch('list-images.vercel.app/');
     const images = await response.json();
     const imageListElement = document.getElementById('image-list');
     images.forEach(image => {
