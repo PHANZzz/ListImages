@@ -10,8 +10,8 @@ app.use(express.json());
 app.get('/', async (req, res) => {
     try {
         await client.connect();
-        const database = client.db('Fruit');
-        const collection = database.collection('Fruits');
+        const database = client.db('Stock');
+        const collection = database.collection('Users');
         const images = await collection.find({}).toArray();
         res.json(images);
     } catch (error) {
