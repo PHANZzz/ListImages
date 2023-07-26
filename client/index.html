@@ -49,7 +49,7 @@
         const card = document.createElement('div');
         card.className = 'card';
         // Update the innerHTML to include the quantity field
-        card.innerHTML = `<img src="data:image/png;base64,${image.img.data}" alt="${image.name}"><div class="container"><h4><b>${image.name}</b></h4><p>${image.price}$</p><p> ${image.quantity}</p><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="addToCart('${image.name}', ${image.price})">Add</button></div>`;
+        card.innerHTML = `<img src="data:image/png;base64,${image.img.data}" alt="${image.name}"><div class="container"><h4><b>${image.name}</b></h4><p>${image.price}$</p><p> ${image.quantity}Kg</p><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="addToCart('${image.name}', ${image.price})$">Add</button></div>`;
         imageListElement.appendChild(card);
     });
 }
