@@ -6,6 +6,7 @@ const uri = "mongodb+srv://sophan:sophan%40123@cluster0.r3agzsk.mongodb.net/?ret
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 app.use((req, res, next) => {
   res.set({
