@@ -26,7 +26,7 @@ app.post('/insert', async (req, res) => {
     try {
         await client.connect();
         const database = client.db('Fruit');
-        const collection = database.collection('Buyer_List');
+        const collection = database.collection('Buyer_Data');
         const data = req.body;
         await collection.insertOne(data);
         res.status(201).send('Data inserted successfully');
