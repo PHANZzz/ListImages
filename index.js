@@ -33,7 +33,11 @@ app.post('/insert', async (req, res) => {
         const database = client.db('Fruit');
         const collection = database.collection('Buyer_Data');
         const data = req.body;
-        data.date = new Date();
+        const currentDate = new Date();
+        const offset = 7; 
+        currentDate.setHours(currentDate.getHours() + offset);
+        data.date = currentDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' });
+        data.time = currentDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
         await collection.insertOne(data);
         res.status(201).send('Data inserted successfully');
     } catch (error) {
@@ -43,7 +47,6 @@ app.post('/insert', async (req, res) => {
         await client.close();
     }
 });
-
 
 
 app.listen(3000, () => {
