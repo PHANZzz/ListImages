@@ -7,6 +7,12 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 app.use(cors());
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.set({
+    "Content-Security-Policy": "default-src 'self'; font-src 'self' data:; img-src 'self' data:; style-src 'self' https://cdn.jsdelivr.net;"
+  });
+  next();
+});
 app.get('/', async (req, res) => {
     try {
         await client.connect();
@@ -21,13 +27,13 @@ app.get('/', async (req, res) => {
         await client.close();
     }
 });
-
 app.post('/insert', async (req, res) => {
     try {
         await client.connect();
         const database = client.db('Fruit');
         const collection = database.collection('Buyer_Data');
         const data = req.body;
+        data.date = new Date();
         await collection.insertOne(data);
         res.status(201).send('Data inserted successfully');
     } catch (error) {
@@ -37,6 +43,7 @@ app.post('/insert', async (req, res) => {
         await client.close();
     }
 });
+
 
 
 app.listen(3000, () => {
