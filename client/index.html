@@ -66,7 +66,7 @@
             function updateBuyButton() {
                 let count = Object.keys(total).length;
                 let buyButton = document.getElementById('buy-button');
-                buyButton.innerHTML = `Buy <br>(${count})`;
+                buyButton.innerHTML = `Buy<br>(${count})`;
             }
 
             document.getElementById('buy-button').addEventListener('click', function() {
@@ -81,6 +81,20 @@
                 localStorage.setItem('purchaseDetails', message);
                 swal("Purchase", message, "success").then(() => {
                     window.location.href = 'service.html';
+                });
+            });
+
+            const searchInput = document.getElementById('default-search');
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value.toLowerCase();
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => {
+                    const name = card.querySelector('h4').textContent.toLowerCase();
+                    if (name.includes(query)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
                 });
             });
 
