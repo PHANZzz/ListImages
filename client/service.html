@@ -41,36 +41,44 @@
     </div>
 
     <script>
-        const form = document.querySelector('form');
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const phoneNumber = document.querySelector('#phone-number').value;
-            const location = document.querySelector('#location').value;
-            const transportationType = document.querySelector('#transportation-type').value;
-            const purchaseDetails = localStorage.getItem('purchaseDetails');
-            const data = { phoneNumber, location, transportationType, purchaseDetails };
-            try {
-                const response = await fetch('https://list-images.vercel.app/insert', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    Swal.fire({
-                        title: 'Thank you for purchasing!',
-                        icon: 'success'
-                    }).then(() => {
-                        window.location.href = 'index.html';
-                    });
-                } else {
-                    console.error('An error occurred while inserting data into the database.');
-                }
-            } catch (error) {
-                console.error(error);
-            }
+       const form = document.querySelector('form');
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const phoneNumber = document.querySelector('#phone-number').value;
+    const location = document.querySelector('#location').value;
+    const transportationType = document.querySelector('#transportation-type').value;
+    if (!phoneNumber || !location || !transportationType) {
+        Swal.fire({
+            title: 'Please fill in all fields',
+            icon: 'warning'
         });
+    } else {
+        const purchaseDetails = localStorage.getItem('purchaseDetails');
+        const data = { phoneNumber, location, transportationType, purchaseDetails };
+        try {
+            const response = await fetch('https://list-images.vercel.app/insert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                Swal.fire({
+                    title: 'Thank you for purchasing!',
+                    icon: 'success'
+                }).then(() => {
+                    window.location.href = 'index.html';
+                });
+            } else {
+                console.error('An error occurred while inserting data into the database.');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+});
+
     </script>
 </body>
 </html>

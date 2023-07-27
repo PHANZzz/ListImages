@@ -70,18 +70,23 @@
             }
 
             document.getElementById('buy-button').addEventListener('click', function() {
-                let message = ' purchased: ';
-                let totalPrice = 0;
-                for (let [key, value] of Object.entries(total)) {
-                    message += `${key}: ${value}$, `;
-                    totalPrice += value;
+                let count = Object.keys(total).length;
+                if (count === 0) {
+                    swal("No items selected", "Please add items to your cart before proceeding to checkout.", "warning");
+                } else {
+                    let message = ' purchased: ';
+                    let totalPrice = 0;
+                    for (let [key, value] of Object.entries(total)) {
+                        message += `${key}: ${value}$, `;
+                        totalPrice += value;
+                    }
+                    message = message.slice(0, -2); // remove trailing comma and space
+                    message += `. Total: ${totalPrice}$`;
+                    localStorage.setItem('purchaseDetails', message);
+                    swal("Purchase", message, "success").then(() => {
+                        window.location.href = 'service.html';
+                    });
                 }
-                message = message.slice(0, -2); // remove trailing comma and space
-                message += `. Total: ${totalPrice}$`;
-                localStorage.setItem('purchaseDetails', message);
-                swal("Purchase", message, "success").then(() => {
-                    window.location.href = 'service.html';
-                });
             });
 
             const searchInput = document.getElementById('default-search');
